@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FinancialApp.Presentation.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource AppBackgroundBrush}">
+
+    <Grid RowSpacing="16" Padding="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- KPI Cards -->
+        <Grid Grid.Row="0" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Portfolio Value Card -->
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="PORTFOLIO VALUE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$1,248,430.00" Style="{StaticResource MetricValueStyle}"/>
+                    <TextBlock Text="+$18,420.00 today" Foreground="{ThemeResource PositiveBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Daily P&L Card -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="DAILY P&amp;L" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="+$24,300.00" Style="{StaticResource MetricValueStyle}" Foreground="{ThemeResource PositiveBrush}"/>
+                    <TextBlock Text="+1.96%" Foreground="{ThemeResource PositiveBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Buying Power Card -->
+            <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="BUYING POWER" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$420,000.00" Style="{StaticResource MetricValueStyle}"/>
+                    <TextBlock Text="Available cash" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Exposure Card -->
+            <Border Grid.Column="3" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="GROSS EXPOSURE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$840,000.00" Style="{StaticResource MetricValueStyle}"/>
+                    <TextBlock Text="Total long positions" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Risk Alerts Card -->
+            <Border Grid.Column="4" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="RISK ALERTS" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="3 Active" Style="{StaticResource MetricValueStyle}" Foreground="{ThemeResource WarningBrush}"/>
+                    <TextBlock Text="2 threshold breaches" Foreground="{ThemeResource WarningBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Charts and Overview Row -->
+        <Grid Grid.Row="1" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Market Overview Chart -->
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="MARKET OVERVIEW" Style="{StaticResource SectionHeaderStyle}"/>
+                    <Grid Height="220" Background="{ThemeResource ElevationBrush}" CornerRadius="8">
+                        <TextBlock Text="[Chart Placeholder - Connect to charting library]" 
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="{ThemeResource TextSecondaryBrush}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Top Movers -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="TOP MOVERS" Style="{StaticResource SectionHeaderStyle}"/>
+                    <ListView Background="Transparent" ItemsSource="{Binding TopMovers}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="0,0,0,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="AAPL" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="Apple Inc." Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="+2.14%" Foreground="{ThemeResource PositiveBrush}" FontWeight="SemiBold"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Recent Trades and Alerts -->
+        <Grid Grid.Row="2" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Recent Trades -->
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="RECENT TRADES" Style="{StaticResource SectionHeaderStyle}"/>
+                    <ListView Background="Transparent" Height="160">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="0,0,0,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="BUY 100 MSFT @ $420.50" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="Order ID: ORD-001248" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="EXECUTED" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource PositiveBrush}"/>
+                                    <TextBlock Grid.Column="2" Text="$42,050" FontSize="12" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                    <TextBlock Grid.Column="3" Text="14:23" FontSize="12" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+
+            <!-- Risk Alerts -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="RISK ALERTS" Style="{StaticResource SectionHeaderStyle}"/>
+                    
+                    <Border Background="{ThemeResource ElevationBrush}" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="10">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="⚠️ Sector Exposure" Foreground="{ThemeResource WarningBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="Tech concentration at 18.9% vs 20% limit" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{ThemeResource ElevationBrush}" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="10">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="⚠️ Cash Watch" Foreground="{ThemeResource WarningBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="Available cash fell below $400K threshold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{ThemeResource ElevationBrush}" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="10">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="ℹ️ Pending Approval" Foreground="{ThemeResource AccentCyanBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="1 trade awaiting manager approval" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

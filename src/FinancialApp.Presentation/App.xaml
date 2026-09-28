@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="FinancialApp.Presentation.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Dark Trading Theme Colors -->
+            <Color x:Key="AppBackgroundColor">#0B1220</Color>
+            <Color x:Key="SurfaceColor">#111827</Color>
+            <Color x:Key="TopBarColor">#0F172A</Color>
+            <Color x:Key="ElevationColor">#1F2937</Color>
+            <Color x:Key="BorderColor">#2C3A4A</Color>
+            <Color x:Key="TextPrimaryColor">#F8FAFC</Color>
+            <Color x:Key="TextSecondaryColor">#A5B4C3</Color>
+            <Color x:Key="AccentBlueColor">#3B82F6</Color>
+            <Color x:Key="AccentCyanColor">#22D3EE</Color>
+            <Color x:Key="SuccessGreenColor">#22C55E</Color>
+            <Color x:Key="DangerRedColor">#EF4444</Color>
+            <Color x:Key="WarningAmberColor">#F59E0B</Color>
+
+            <!-- Brushes -->
+            <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0B1220"/>
+            <SolidColorBrush x:Key="SurfaceBrush" Color="#111827"/>
+            <SolidColorBrush x:Key="TopBarBrush" Color="#0F172A"/>
+            <SolidColorBrush x:Key="ElevationBrush" Color="#1F2937"/>
+            <SolidColorBrush x:Key="BorderBrush" Color="#2C3A4A"/>
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F8FAFC"/>
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#A5B4C3"/>
+            <SolidColorBrush x:Key="AccentBlueBrush" Color="#3B82F6"/>
+            <SolidColorBrush x:Key="AccentCyanBrush" Color="#22D3EE"/>
+            <SolidColorBrush x:Key="PositiveBrush" Color="#22C55E"/>
+            <SolidColorBrush x:Key="NegativeBrush" Color="#EF4444"/>
+            <SolidColorBrush x:Key="WarningBrush" Color="#F59E0B"/>
+
+            <!-- Text Styles -->
+            <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
+            </Style>
+
+            <Style x:Key="HeroTextStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="32"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
+            </Style>
+
+            <Style x:Key="SubheaderTextStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
+            </Style>
+
+            <Style x:Key="MetricLabelStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Foreground" Value="{ThemeResource TextSecondaryBrush}"/>
+                <Setter Property="CharacterSpacing" Value="50"/>
+            </Style>
+
+            <Style x:Key="MetricValueStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="28"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
+            </Style>
+
+            <!-- Button Styles -->
+            <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource AccentBlueBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Padding" Value="16,10"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource SurfaceBrush}"/>
+                <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
+                <Setter Property="BorderBrush" Value="{ThemeResource BorderBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="16,10"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <!-- Card Style -->
+            <Style x:Key="CardStyle" TargetType="Border">
+                <Setter Property="Background" Value="{ThemeResource SurfaceBrush}"/>
+                <Setter Property="BorderBrush" Value="{ThemeResource BorderBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="12"/>
+                <Setter Property="Padding" Value="16"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

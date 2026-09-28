@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FinancialApp.Presentation.Views.WatchlistPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource AppBackgroundBrush}">
+
+    <Grid RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Spacing="12">
+            <TextBlock Text="WATCHLIST" Style="{StaticResource SubheaderTextStyle}"/>
+            <TextBlock Text="Real-time equity monitoring and quick trading actions" Foreground="{ThemeResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Watchlist Data Grid -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Headers -->
+                <Grid Grid.Row="0" Padding="16" Background="{ThemeResource ElevationBrush}" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="0,0,0,1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="SYMBOL" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="1" Text="LAST PRICE" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="2" Text="CHANGE" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="3" Text="% CHANGE" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="4" Text="BID / ASK" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="5" Text="VOLUME" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="6" Text="VWAP" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Grid.Column="7"/>
+                    <TextBlock Grid.Column="8" Text="ACTION" FontWeight="SemiBold" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+                </Grid>
+
+                <!-- Data Rows -->
+                <ListView Grid.Row="1" Background="Transparent" SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="16,12" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="0,0,0,1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Symbol -->
+                                <StackPanel>
+                                    <TextBlock Text="AAPL" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                    <TextBlock Text="Apple" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                </StackPanel>
+
+                                <!-- Last Price -->
+                                <TextBlock Grid.Column="1" Text="$211.40" Foreground="{ThemeResource TextPrimaryBrush}"/>
+
+                                <!-- Change -->
+                                <TextBlock Grid.Column="2" Text="+$1.82" Foreground="{ThemeResource PositiveBrush}" FontWeight="SemiBold"/>
+
+                                <!-- % Change -->
+                                <TextBlock Grid.Column="3" Text="+0.87%" Foreground="{ThemeResource PositiveBrush}" FontWeight="SemiBold"/>
+
+                                <!-- Bid / Ask -->
+                                <TextBlock Grid.Column="4" Text="211.35 / 211.45" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+
+                                <!-- Volume -->
+                                <TextBlock Grid.Column="5" Text="52.3M" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+
+                                <!-- VWAP -->
+                                <TextBlock Grid.Column="6" Text="$210.92" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12"/>
+
+                                <!-- Actions -->
+                                <StackPanel Grid.Column="8" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                                    <Button Content="BUY" Style="{StaticResource SecondaryButtonStyle}" Padding="8,6"/>
+                                    <Button Content="SELL" Style="{StaticResource SecondaryButtonStyle}" Padding="8,6"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                    <!-- Sample Data Rows -->
+                    <ListViewItem/>
+                    <ListViewItem/>
+                    <ListViewItem/>
+                </ListView>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

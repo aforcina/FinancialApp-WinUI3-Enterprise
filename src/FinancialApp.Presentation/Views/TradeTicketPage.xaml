@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FinancialApp.Presentation.Views.TradeTicketPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource AppBackgroundBrush}">
+
+    <Grid ColumnSpacing="20" RowSpacing="16" Padding="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Order Entry Form -->
+        <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+            <StackPanel Spacing="16">
+                <TextBlock Text="ORDER ENTRY" Style="{StaticResource SectionHeaderStyle}"/>
+
+                <!-- Symbol and Side Row -->
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Symbol" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Text="AAPL" 
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource TextPrimaryBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Side" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <ComboBox Background="{ThemeResource ElevationBrush}"
+                                  Foreground="{ThemeResource TextPrimaryBrush}"
+                                  BorderBrush="{ThemeResource BorderBrush}">
+                            <ComboBoxItem Content="BUY" IsSelected="True"/>
+                            <ComboBoxItem Content="SELL"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Quantity and Order Type -->
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Quantity" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Text="100" 
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource TextPrimaryBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Order Type" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <ComboBox Background="{ThemeResource ElevationBrush}"
+                                  Foreground="{ThemeResource TextPrimaryBrush}"
+                                  BorderBrush="{ThemeResource BorderBrush}">
+                            <ComboBoxItem Content="LIMIT" IsSelected="True"/>
+                            <ComboBoxItem Content="MARKET"/>
+                            <ComboBoxItem Content="STOP"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Price Fields -->
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Limit Price" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Text="210.50" 
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource TextPrimaryBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Stop Price" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Text="205.00" 
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource TextPrimaryBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Cost Summary -->
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Estimated Cost" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Text="$21,050.00" 
+                                 IsReadOnly="True"
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource TextPrimaryBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Buying Power" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Text="$399,000.00" 
+                                 IsReadOnly="True"
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource PositiveBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"
+                                 FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Validation Errors (if any) -->
+                <Border Background="#261A11" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Visibility="Collapsed">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="⚠️ Validation Issues" Foreground="{ThemeResource WarningBrush}" FontWeight="SemiBold" FontSize="12"/>
+                        <TextBlock Text="Position concentration would exceed 20% limit" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Action Buttons -->
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Content="CHECK RISK" Style="{StaticResource SecondaryButtonStyle}"/>
+                    <Button Grid.Column="1" Content="SUBMIT ORDER" Style="{StaticResource PrimaryButtonStyle}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Risk Summary Panel -->
+        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+            <StackPanel Spacing="16">
+                <TextBlock Text="RISK SUMMARY" Style="{StaticResource SectionHeaderStyle}"/>
+
+                <!-- Current Price -->
+                <StackPanel>
+                    <TextBlock Text="CURRENT PRICE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$211.40" FontSize="24" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                </StackPanel>
+
+                <!-- Notional Value -->
+                <StackPanel>
+                    <TextBlock Text="NOTIONAL VALUE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$21,140.00" FontSize="24" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                </StackPanel>
+
+                <!-- Buying Power After -->
+                <StackPanel>
+                    <TextBlock Text="BUYING POWER AFTER" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$398,860.00" FontSize="24" FontWeight="SemiBold" Foreground="{ThemeResource PositiveBrush}"/>
+                </StackPanel>
+
+                <!-- Position Concentration -->
+                <StackPanel>
+                    <TextBlock Text="POSITION CONCENTRATION" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="7.4%" FontSize="24" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                    <TextBlock Text="Well within 20% limit" Foreground="{ThemeResource PositiveBrush}" FontSize="11"/>
+                </StackPanel>
+
+                <!-- Sector Exposure -->
+                <StackPanel>
+                    <TextBlock Text="SECTOR EXPOSURE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="Tech: 18.9% (Limit: 20%)" FontSize="14" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                </StackPanel>
+
+                <!-- Order Status -->
+                <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="ORDER STATUS" Style="{StaticResource MetricLabelStyle}"/>
+                        <TextBlock Text="✅ Ready to submit" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource PositiveBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Commission Info -->
+                <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="ESTIMATED COMMISSION" Style="{StaticResource MetricLabelStyle}"/>
+                        <TextBlock Text="$21.14 (0.10%)" FontSize="16" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
