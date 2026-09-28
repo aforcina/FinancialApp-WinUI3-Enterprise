@@ -1,81 +1,64 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FinancialApp.Core.Models
 {
-    public class Position
+    public class Portfolio : INotifyPropertyChanged
     {
-        public string Symbol { get; private set; }
-        public decimal Quantity { get; private set; }
-        public decimal AveragePrice { get; private set; }
+        private ObservableCollection<Position> _positions;
+        private decimal _totalValue;
+        private decimal _totalCostBasis;
+        private decimal _dailyPnL;
+        private decimal _unrealizedPnL;
+        private decimal _buyingPower;
 
-        public Position(string symbol, decimal quantity, decimal averagePrice)
+        public ObservableCollection<Position> Positions
         {
-            if (string.IsNullOrWhiteSpace(symbol)) throw new ArgumentException("Symbol is required.", nameof(symbol));
-            if (quantity < 0) throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity cannot be negative.");
-            if (averagePrice <= 0) throw new ArgumentOutOfRangeException(nameof(averagePrice), "Average price must be greater than zero.");
-
-            Symbol = symbol.Trim().ToUpperInvariant();
-            Quantity = quantity;
-            AveragePrice = averagePrice;
+            get => _positions;
+            set { _positions = value; OnPropertyChanged(); }
         }
 
-        public void Update(decimal quantityDelta, decimal newAveragePrice)
+        public decimal TotalValue
         {
-            Quantity += quantityDelta;
-            AveragePrice = newAveragePrice;
-        }
-    }
-
-    public class Portfolio
-    {
-        public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public Guid AccountId { get; private set; }
-        public List<Position> Positions { get; private set; }
-
-        public Portfolio(Guid accountId, string name)
-        {
-            if (accountId == Guid.Empty) throw new ArgumentException("Account ID is required.", nameof(accountId));
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Portfolio name is required.", nameof(name));
-
-            Id = Guid.NewGuid();
-            AccountId = accountId;
-            Name = name;
-            Positions = new List<Position>();
+            get => _totalValue;
+            set { _totalValue = value; OnPropertyChanged(); }
         }
 
-        public void AddOrUpdatePosition(string symbol, decimal quantityDelta, decimal averagePrice)
+        public decimal TotalCostBasis
         {
-            var existing = Positions.FirstOrDefault(p => p.Symbol == symbol.Trim().ToUpperInvariant());
-
-            if (existing == null)
-            {
-                if (quantityDelta <= 0)
-                    throw new InvalidOperationException("Cannot create a position with a non-positive quantity.");
-
-                Positions.Add(new Position(symbol, quantityDelta, averagePrice));
-                return;
-            }
-
-            var updatedQuantity = existing.Quantity + quantityDelta;
-            if (updatedQuantity < 0)
-                throw new InvalidOperationException("Position cannot go negative.");
-
-            if (updatedQuantity == 0)
-            {
-                Positions.Remove(existing);
-                return;
-            }
-
-            existing.Update(quantityDelta, averagePrice);
+            get => _totalCostBasis;
+            set { _totalCostBasis = value; OnPropertyChanged(); }
         }
 
-        public decimal TotalPositionQuantity(string symbol)
+        public decimal DailyPnL
         {
-            var position = Positions.FirstOrDefault(p => p.Symbol == symbol.Trim().ToUpperInvariant());
-            return position?.Quantity ?? 0m;
+            get => _dailyPnL;
+            set { _dailyPnL = value; OnPropertyChanged(); }
+        }
+
+        public decimal UnrealizedPnL
+        {
+            get => _unrealizedPnL;
+            set { _unrealizedPnL = value; OnPropertyChanged(); }
+        }
+
+        public decimal BuyingPower
+        {
+            get => _buyingPower;
+            set { _buyingPower = value; OnPropertyChanged(); }
+        }
+
+        public Portfolio()
+        {
+            Positions = new ObservableCollection<Position>();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
