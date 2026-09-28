@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FinancialApp.Presentation.Views.ApprovalQueuePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource AppBackgroundBrush}">
+
+    <Grid ColumnSpacing="16" Padding="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Pending Trades List -->
+        <Border Style="{StaticResource CardStyle}">
+            <Grid RowSpacing="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="PENDING APPROVALS" Style="{StaticResource SectionHeaderStyle}"/>
+
+                <ListView Grid.Row="1" Background="Transparent" SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="12" Background="{ThemeResource ElevationBrush}" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,4">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="BUY 100 AAPL @ $210.50" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                    <TextBlock Text="ORD-001248" FontSize="11" Foreground="{ThemeResource AccentBlueBrush}" FontFamily="Courier New"/>
+                                    <TextBlock Text="Submitted by John Smith" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="5 min ago" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <!-- Sample Items -->
+                    <ListViewItem/>
+                    <ListViewItem/>
+                    <ListViewItem/>
+                </ListView>
+            </Grid>
+        </Border>
+
+        <!-- Trade Details and Action Panel -->
+        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+            <ScrollViewer>
+                <StackPanel Spacing="16">
+                    <TextBlock Text="TRADE DETAILS" Style="{StaticResource SectionHeaderStyle}"/>
+
+                    <!-- Trade Info Cards -->
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="SYMBOL" Style="{StaticResource MetricLabelStyle}"/>
+                                <TextBlock Text="AAPL" FontSize="20" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="SIDE" Style="{StaticResource MetricLabelStyle}"/>
+                                <TextBlock Text="BUY" FontSize="20" FontWeight="SemiBold" Foreground="{ThemeResource PositiveBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="QUANTITY" Style="{StaticResource MetricLabelStyle}"/>
+                                <TextBlock Text="100 shares" FontSize="18" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="PRICE" Style="{StaticResource MetricLabelStyle}"/>
+                                <TextBlock Text="$210.50" FontSize="18" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Risk and Notional -->
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="NOTIONAL VALUE" Style="{StaticResource MetricLabelStyle}"/>
+                                <TextBlock Text="$21,050.00" FontSize="18" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="CASH IMPACT" Style="{StaticResource MetricLabelStyle}"/>
+                                <TextBlock Text="-$21,050.00" FontSize="18" FontWeight="SemiBold" Foreground="{ThemeResource NegativeBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Risk Warnings -->
+                    <Border Background="#261A11" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="⚠️ Risk Check" Foreground="{ThemeResource WarningBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="Position concentration will reach 2.5% (within limit)" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Buying power after trade: $398,950" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Compliance Info -->
+                    <Border Background="#164E63" BorderBrush="{ThemeResource AccentCyanBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="ℹ️ Compliance" Foreground="{ThemeResource AccentCyanBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="Trader: John Smith (Level 2)" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Submitted: 2024-09-28 14:18:45" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Comment/Note Section -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="NOTES" Style="{StaticResource SectionHeaderStyle}"/>
+                        <TextBox PlaceholderText="Add approval notes..."
+                                 Height="100"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Background="{ThemeResource ElevationBrush}"
+                                 Foreground="{ThemeResource TextPrimaryBrush}"
+                                 BorderBrush="{ThemeResource BorderBrush}"
+                                 Padding="12,10"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <!-- Action Buttons -->
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="APPROVE" 
+                                Background="{ThemeResource PositiveBrush}"
+                                Foreground="White"
+                                Padding="16,10"
+                                CornerRadius="8"
+                                FontWeight="SemiBold"/>
+
+                        <Button Grid.Column="1" Content="REJECT" 
+                                Background="{ThemeResource NegativeBrush}"
+                                Foreground="White"
+                                Padding="16,10"
+                                CornerRadius="8"
+                                FontWeight="SemiBold"/>
+
+                        <Button Grid.Column="2" Content="HOLD" Style="{StaticResource SecondaryButtonStyle}"/>
+                    </Grid>
+
+                    <!-- Audit Trail -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="AUDIT TRAIL" Style="{StaticResource SectionHeaderStyle}"/>
+                        <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="14:18:45 - Trade submitted by John Smith" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                <TextBlock Text="14:19:02 - Risk validation passed" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                                <TextBlock Text="14:19:15 - Compliance review initiated" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Page>

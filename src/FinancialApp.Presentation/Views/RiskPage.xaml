@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FinancialApp.Presentation.Views.RiskPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource AppBackgroundBrush}">
+
+    <Grid RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Spacing="12">
+            <TextBlock Text="RISK MANAGEMENT" Style="{StaticResource SubheaderTextStyle}"/>
+            <TextBlock Text="Portfolio risk exposure, limits, and breach monitoring" Foreground="{ThemeResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Risk KPIs -->
+        <Grid Grid.Row="1" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Gross Exposure -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="GROSS EXPOSURE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="$840,000.00" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                    <ProgressBar Value="70" Height="6" Background="{ThemeResource ElevationBrush}" Foreground="{ThemeResource PositiveBrush}"/>
+                    <TextBlock Text="$1.2M limit (70%)" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Leverage Ratio -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="LEVERAGE RATIO" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="1.68x" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource PositiveBrush}"/>
+                    <ProgressBar Value="84" Height="6" Background="{ThemeResource ElevationBrush}" Foreground="{ThemeResource PositiveBrush}"/>
+                    <TextBlock Text="2.0x limit (84%)" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Max Single Position -->
+            <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="MAX SINGLE POSITION" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="MSFT: 8.4%" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                    <ProgressBar Value="42" Height="6" Background="{ThemeResource ElevationBrush}" Foreground="{ThemeResource PositiveBrush}"/>
+                    <TextBlock Text="20% limit (42%)" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Sector Exposure -->
+            <Border Grid.Column="3" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="SECTOR EXPOSURE" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Text="Tech: 18.9%" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                    <ProgressBar Value="95" Height="6" Background="{ThemeResource ElevationBrush}" Foreground="{ThemeResource WarningBrush}"/>
+                    <TextBlock Text="20% limit (95%)" FontSize="11" Foreground="{ThemeResource WarningBrush}" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Risk Limits and Breaches -->
+        <Grid Grid.Row="2" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Risk Limits -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="ACTIVE RISK LIMITS" Style="{StaticResource SectionHeaderStyle}"/>
+                    
+                    <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12" BorderBrush="{ThemeResource PositiveBrush}" BorderThickness="1">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Daily Loss Limit" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                <TextBlock Text="-$50,000" FontSize="12" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="$50,000" Foreground="{ThemeResource PositiveBrush}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="✓" Foreground="{ThemeResource PositiveBrush}" FontSize="20" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12" BorderBrush="{ThemeResource PositiveBrush}" BorderThickness="1">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Max Gross Exposure" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                <TextBlock Text="$1,200,000" FontSize="12" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="$840,000" Foreground="{ThemeResource PositiveBrush}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="✓" Foreground="{ThemeResource PositiveBrush}" FontSize="20" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{ThemeResource ElevationBrush}" CornerRadius="8" Padding="12" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Single Sector Limit" FontWeight="SemiBold" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                                <TextBlock Text="20%" FontSize="12" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="18.9%" Foreground="{ThemeResource WarningBrush}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="!" Foreground="{ThemeResource WarningBrush}" FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Risk Breaches and Alerts -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="RISK ALERTS" Style="{StaticResource SectionHeaderStyle}"/>
+                    
+                    <Border Background="#261A11" BorderBrush="{ThemeResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="⚠️ Sector Concentration Warning" Foreground="{ThemeResource WarningBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="Tech sector at 18.9% vs 20% limit" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Add 0.1% to trigger breach" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Triggered at: 14:18" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="10"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#1B2C3C" BorderBrush="{ThemeResource AccentCyanBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="ℹ️ Info: Buying Power Low" Foreground="{ThemeResource AccentCyanBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="$420,000 remaining of $500,000" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Consider liquidating positions" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Triggered at: 14:15" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="10"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#0B2D2D" BorderBrush="{ThemeResource PositiveBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="✔ Daily P&amp;L Target Achieved" Foreground="{ThemeResource PositiveBrush}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="Current: +$24,300 vs Target: +$20,000" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="11"/>
+                            <TextBlock Text="Achieved at: 13:45" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="10"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
