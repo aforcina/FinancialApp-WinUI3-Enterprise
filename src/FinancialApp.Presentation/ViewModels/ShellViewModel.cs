@@ -2,36 +2,44 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using FinancialApp.Core.Models;
 
 namespace FinancialApp.Presentation.ViewModels
 {
-    public class ShellViewModel : INotifyPropertyChanged
+    public sealed class ShellViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Account> _accounts;
         private Account _selectedAccount;
         private string _selectedSymbol = "AAPL";
-        private decimal _selectedSecurityPrice = 211.40m;
-        private string _selectedSecurityChange = "+$1.82 (+0.87%))";
-        private object _selectedSecurityChangeColor;
-        private string _selectedSecurityBidAsk = "211.35 / 211.45";
-        private decimal _selectedSecurityPosition = 100m;
-        private string _selectedSecurityVolume = "52.3M";
+        private decimal _selectedSecurityPrice;
+        private string _selectedSecurityChange = "Loading...";
+        private string _selectedSecurityBidAsk = "Loading...";
+        private decimal _selectedSecurityPosition;
+        private string _selectedSecurityVolume = "Loading...";
         private string _selectedSecurityRiskLevel = "Moderate";
-        private object _selectedSecurityRiskColor;
 
         public ShellViewModel()
         {
-            LoadData();
-            CreateCommands();
+            Accounts = new ObservableCollection<Account>
+            {
+                new Account("ACC-001", "Primary Trading Account", "USD", 500000m),
+                new Account("ACC-002", "Hedge Fund Account", "USD", 250000m)
+            };
+
+            SelectedAccount = Accounts[0];
+            NavigateToDashboardCommand = CreateNavigationCommand(typeof(Views.DashboardPage));
+            NavigateToWatchlistCommand = CreateNavigationCommand(typeof(Views.WatchlistPage));
+            NavigateToPositionsCommand = CreateNavigationCommand(typeof(Views.PositionsPage));
+            NavigateToTradeTicketCommand = CreateNavigationCommand(typeof(Views.TradeTicketPage));
+            NavigateToBlotterCommand = CreateNavigationCommand(typeof(Views.TradeBlotterPage));
+            NavigateToApprovalsCommand = CreateNavigationCommand(typeof(Views.ApprovalQueuePage));
+            NavigateToRiskCommand = CreateNavigationCommand(typeof(Views.RiskPage));
+            NavigateToReportsCommand = CreateNavigationCommand(typeof(Views.ReportsPage));
+            TradeSelectedSecurityCommand = CreateNavigationCommand(typeof(Views.TradeTicketPage));
         }
 
-        public ObservableCollection<Account> Accounts
-        {
-            get => _accounts;
-            set { _accounts = value; OnPropertyChanged(); }
-        }
+        public ObservableCollection<Account> Accounts { get; }
 
         public Account SelectedAccount
         {
@@ -55,12 +63,6 @@ namespace FinancialApp.Presentation.ViewModels
         {
             get => _selectedSecurityChange;
             set { _selectedSecurityChange = value; OnPropertyChanged(); }
-        }
-
-        public object SelectedSecurityChangeColor
-        {
-            get => _selectedSecurityChangeColor;
-            set { _selectedSecurityChangeColor = value; OnPropertyChanged(); }
         }
 
         public string SelectedSecurityBidAsk
@@ -87,46 +89,37 @@ namespace FinancialApp.Presentation.ViewModels
             set { _selectedSecurityRiskLevel = value; OnPropertyChanged(); }
         }
 
-        public object SelectedSecurityRiskColor
-        {
-            get => _selectedSecurityRiskColor;
-            set { _selectedSecurityRiskColor = value; OnPropertyChanged(); }
-        }
+        public ICommand NavigateToDashboardCommand { get; }
+        public ICommand NavigateToWatchlistCommand { get; }
+        public ICommand NavigateToPositionsCommand { get; }
+        public ICommand NavigateToTradeTicketCommand { get; }
+        public ICommand NavigateToBlotterCommand { get; }
+        public ICommand NavigateToApprovalsCommand { get; }
+        public ICommand NavigateToRiskCommand { get; }
+        public ICommand NavigateToReportsCommand { get; }
+        public ICommand TradeSelectedSecurityCommand { get; }
 
-        public ICommand NavigateToDashboardCommand { get; private set; }
-        public ICommand NavigateToWatchlistCommand { get; private set; }
-        public ICommand NavigateToPositionsCommand { get; private set; }
-        public ICommand NavigateToTradeTicketCommand { get; private set; }
-        public ICommand NavigateToBlotterCommand { get; private set; }
-        public ICommand NavigateToApprovalsCommand { get; private set; }
-        public ICommand NavigateToRiskCommand { get; private set; }
-        public ICommand NavigateToReportsCommand { get; private set; }
-        public ICommand TradeSelectedSecurityCommand { get; private set; }
-
+        public event EventHandler<Type> NavigationRequested;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void LoadData()
+        public async Task LoadSelectedSecurityAsync(FinancialApp.Core.Services.IMarketDataService marketDataService)
         {
-            Accounts = new ObservableCollection<Account>
-            {
-                new Account("ACC-001", "Primary Trading Account", "USD", 500000m),
-                new Account("ACC-002", "Hedge Fund Account", "USD", 250000m)
-            };
+            var quote = await marketDataService.GetMarketDataAsync(SelectedSymbol);
+            if (quote == null) return;
 
-            SelectedAccount = Accounts[0];
+            SelectedSecurityPrice = quote.LastPrice;
+            SelectedSecurityChange = $"{quote.Change:+$0.00;-$0.00;$0.00} ({quote.ChangePercent:+0.00;-0.00;0.00}%)";
+            SelectedSecurityBidAsk = $"{quote.BidPrice:C2} / {quote.AskPrice:C2}";
+            SelectedSecurityVolume = quote.Volume.ToString("N0");
         }
 
-        private void CreateCommands()
+        private ICommand CreateNavigationCommand(Type pageType)
         {
-            NavigateToDashboardCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToWatchlistCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToPositionsCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToTradeTicketCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToBlotterCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToApprovalsCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToRiskCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            NavigateToReportsCommand = new RelayCommand(async _ => await Task.CompletedTask);
-            TradeSelectedSecurityCommand = new RelayCommand(async _ => await Task.CompletedTask);
+            return new RelayCommand(_ =>
+            {
+                NavigationRequested?.Invoke(this, pageType);
+                return Task.CompletedTask;
+            });
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -1,20 +1,22 @@
 using Microsoft.UI.Xaml;
+using FinancialApp.Presentation;
 
 namespace FinancialApp.Presentation
 {
     public partial class App : Application
     {
+        public static TradingServices Services { get; private set; }
+
         public App()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            Services = new TradingServices();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            m_window = new MainWindow();
-            m_window.Activate();
+            var window = new MainWindow();
+            window.Activate();
         }
-
-        private Window m_window;
     }
 }

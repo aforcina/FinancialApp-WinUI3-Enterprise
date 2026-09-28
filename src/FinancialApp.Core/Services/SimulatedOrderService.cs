@@ -1,72 +1,27 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using FinancialApp.Core.Models;
 
 namespace FinancialApp.Core.Services
 {
-    /// <summary>
-    /// Simulated order service.
-    /// In production, this would connect to an order management system (OMS).
-    /// </summary>
     public class SimulatedOrderService : IOrderService
     {
-        private readonly Dictionary<string, ObservableCollection<Order>> _orders;
-        private readonly Random _random;
+        private readonly Dictionary<string, ObservableCollection<Order>> _orders = new Dictionary<string, ObservableCollection<Order>>();
+        private readonly Random _random = new Random();
 
-        public SimulatedOrderService()
-        {
-            _orders = new Dictionary<string, ObservableCollection<Order>>();
-            _random = new Random();
-            InitializeOrders();
-        }
+        public SimulatedOrderService() => InitializeOrders();
 
         private void InitializeOrders()
         {
-            var orders = new ObservableCollection<Order>
+            _orders["ACC-001"] = new ObservableCollection<Order>
             {
-                new Order
-                {
-                    Symbol = "AAPL",
-                    Side = OrderSide.Buy,
-                    Quantity = 100,
-                    OrderType = OrderType.Limit,
-                    LimitPrice = 210.50m,
-                    Status = OrderStatus.Executed,
-                    ApprovalStatus = ApprovalStatus.Approved,
-                    ExecutedPrice = 210.40m,
-                    ExecutedQuantity = 100,
-                    SubmittedBy = "John Smith",
-                    ApprovedBy = "Manager A",
-                    ExecutedAt = DateTime.UtcNow.AddHours(-2),
-                    Notes = "Standard purchase order"
-                },
-                new Order
-                {
-                    Symbol = "MSFT",
-                    Side = OrderSide.Sell,
-                    Quantity = 50,
-                    OrderType = OrderType.Limit,
-                    LimitPrice = 421.00m,
-                    Status = OrderStatus.Submitted,
-                    ApprovalStatus = ApprovalStatus.Pending,
-                    SubmittedBy = "Jane Doe",
-                    Notes = "Pending approval"
-                },
-                new Order
-                {
-                    Symbol = "GOOGL",
-                    Side = OrderSide.Buy,
-                    Quantity = 50,
-                    OrderType = OrderType.Market,
-                    Status = OrderStatus.Draft,
-                    ApprovalStatus = ApprovalStatus.Pending,
-                    SubmittedBy = "John Smith",
-                    Notes = "Draft order"
-                }
+                new Order { Symbol = "AAPL", Side = OrderSide.Buy, Quantity = 100, OrderType = OrderType.Limit, LimitPrice = 210.50m, Status = OrderStatus.Executed, ApprovalStatus = ApprovalStatus.Approved, ExecutedPrice = 210.40m, ExecutedQuantity = 100, SubmittedBy = "John Smith", ApprovedBy = "Manager A", ExecutedAt = DateTime.UtcNow.AddHours(-2), Notes = "Standard purchase order" },
+                new Order { Symbol = "MSFT", Side = OrderSide.Sell, Quantity = 50, OrderType = OrderType.Limit, LimitPrice = 421.00m, Status = OrderStatus.Submitted, ApprovalStatus = ApprovalStatus.Pending, SubmittedBy = "Jane Doe", Notes = "Pending approval" },
+                new Order { Symbol = "GOOGL", Side = OrderSide.Buy, Quantity = 50, OrderType = OrderType.Market, Status = OrderStatus.Draft, ApprovalStatus = ApprovalStatus.Pending, SubmittedBy = "John Smith", Notes = "Draft order" }
             };
-
-            _orders["ACC-001"] = orders;
         }
 
         public Task<Order> CreateOrderAsync(Order order)
@@ -103,29 +58,18 @@ namespace FinancialApp.Core.Services
         {
             order.Status = OrderStatus.Executed;
             order.ExecutedQuantity = order.Quantity;
-            order.ExecutedPrice = order.LimitPrice ?? (decimal)(_random.NextDouble() * 100);
+            order.ExecutedPrice = order.LimitPrice ?? (decimal)(_random.NextDouble() * 100 + 50);
             order.ExecutedAt = DateTime.UtcNow;
             return Task.FromResult(order);
         }
 
-        public Task<ObservableCollection<Order>> GetOrdersAsync(string accountId)
-        {
-            if (_orders.TryGetValue(accountId, out var orders))
-            {
-                return Task.FromResult(orders);
-            }
-            return Task.FromResult(new ObservableCollection<Order>());
-        }
+        public Task<ObservableCollection<Order>> GetOrdersAsync(string accountId) =>
+            Task.FromResult(_orders.TryGetValue(accountId, out var orders) ? orders : new ObservableCollection<Order>());
 
         public Task<Order> GetOrderAsync(string orderId)
         {
-            foreach (var orders in _orders.Values)
-            {
-                var order = orders.FirstOrDefault(o => o.OrderId == orderId);
-                if (order != null)
-                    return Task.FromResult(order);
-            }
-            return Task.FromResult<Order>(null);
+            var order = _orders.Values.SelectMany(items => items).FirstOrDefault(item => item.OrderId == orderId);
+            return Task.FromResult(order);
         }
     }
 }

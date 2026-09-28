@@ -1,34 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FinancialApp.Core.Models;
 
 namespace FinancialApp.Core.Services
 {
-    /// <summary>
-    /// Simulated market data service.
-    /// In production, this would connect to Bloomberg, Reuters, or other data providers.
-    /// For the demo, we simulate realistic price movements.
-    /// </summary>
-    public class SimulatedMarketDataService : IMarketDataService
+    public class SimulatedMarketDataService : IMarketDataService, IDisposable
     {
-        private readonly Dictionary<string, MarketData> _marketData;
-        private readonly Random _random;
+        private readonly Dictionary<string, MarketData> _marketData = new Dictionary<string, MarketData>(StringComparer.OrdinalIgnoreCase);
+        private readonly Random _random = new Random();
         private CancellationTokenSource _cancellationTokenSource;
         private Task _priceUpdateTask;
-        private const int UPDATE_INTERVAL_MS = 2000; // Update prices every 2 seconds
+        private const int UpdateIntervalMs = 2000;
 
-        public SimulatedMarketDataService()
-        {
-            _marketData = new Dictionary<string, MarketData>();
-            _random = new Random();
-            InitializeMarketData();
-        }
+        public SimulatedMarketDataService() => InitializeMarketData();
 
         private void InitializeMarketData()
         {
-            // Initialize with sample stocks
             var stocks = new[]
             {
                 new { Symbol = "AAPL", Name = "Apple Inc.", BasePrice = 211.40m, Sector = "Technology" },
@@ -43,23 +34,16 @@ namespace FinancialApp.Core.Services
 
             foreach (var stock in stocks)
             {
-                var change = (decimal)(_random.NextDouble() * 4 - 2); // -2 to +2
-                var currentPrice = stock.BasePrice + change;
-
+                var currentPrice = stock.BasePrice + (decimal)(_random.NextDouble() * 4 - 2);
                 _marketData[stock.Symbol] = new MarketData
                 {
-                    Symbol = stock.Symbol,
-                    LastPrice = currentPrice,
-                    BidPrice = currentPrice - 0.05m,
-                    AskPrice = currentPrice + 0.05m,
-                    Change = change,
-                    ChangePercent = (change / stock.BasePrice) * 100,
-                    Volume = (long)(_random.Next(10000000, 100000000)),
-                    CompanyName = stock.Name,
-                    Sector = stock.Sector,
-                    DayHigh = stock.BasePrice + 5,
-                    DayLow = stock.BasePrice - 5,
-                    MarketCap = 1000000000000, // 1 trillion
+                    Symbol = stock.Symbol, LastPrice = currentPrice,
+                    BidPrice = currentPrice - 0.05m, AskPrice = currentPrice + 0.05m,
+                    Change = currentPrice - stock.BasePrice,
+                    ChangePercent = ((currentPrice - stock.BasePrice) / stock.BasePrice) * 100,
+                    Volume = _random.Next(10000000, 100000000), CompanyName = stock.Name,
+                    Sector = stock.Sector, DayHigh = stock.BasePrice + 5,
+                    DayLow = stock.BasePrice - 5, MarketCap = 1000000000000,
                     LastUpdate = DateTime.UtcNow
                 };
             }
@@ -67,91 +51,71 @@ namespace FinancialApp.Core.Services
 
         public Task<MarketData> GetMarketDataAsync(string symbol)
         {
-            if (_marketData.TryGetValue(symbol, out var data))
-            {
-                return Task.FromResult(new MarketData
-                {
-                    Symbol = data.Symbol,
-                    LastPrice = data.LastPrice,
-                    BidPrice = data.BidPrice,
-                    AskPrice = data.AskPrice,
-                    Change = data.Change,
-                    ChangePercent = data.ChangePercent,
-                    Volume = data.Volume,
-                    CompanyName = data.CompanyName,
-                    Sector = data.Sector,
-                    DayHigh = data.DayHigh,
-                    DayLow = data.DayLow,
-                    MarketCap = data.MarketCap,
-                    LastUpdate = data.LastUpdate
-                });
-            }
-
-            return Task.FromResult<MarketData>(null);
+            if (!_marketData.TryGetValue(symbol?.Trim() ?? string.Empty, out var data))
+                return Task.FromResult<MarketData>(null);
+            return Task.FromResult(Clone(data));
         }
 
         public Task<ObservableCollection<MarketData>> GetWatchlistAsync()
         {
-            var watchlist = new ObservableCollection<MarketData>();
-            foreach (var data in _marketData.Values)
-            {
-                watchlist.Add(data);
-            }
-            return Task.FromResult(watchlist);
+            return Task.FromResult(new ObservableCollection<MarketData>(_marketData.Values.Select(Clone)));
         }
 
         public Task<decimal> GetCurrentPriceAsync(string symbol)
         {
-            if (_marketData.TryGetValue(symbol, out var data))
-            {
-                return Task.FromResult(data.LastPrice);
-            }
-            return Task.FromResult(0m);
+            return Task.FromResult(_marketData.TryGetValue(symbol ?? string.Empty, out var data) ? data.LastPrice : 0m);
         }
 
         public void StartPriceUpdates()
         {
-            if (_priceUpdateTask != null && !_priceUpdateTask.IsCompleted)
-                return;
-
+            if (_priceUpdateTask != null && !_priceUpdateTask.IsCompleted) return;
+            _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
             _priceUpdateTask = UpdatePricesAsync(_cancellationTokenSource.Token);
         }
 
-        public void StopPriceUpdates()
-        {
-            _cancellationTokenSource?.Cancel();
-        }
+        public void StopPriceUpdates() => _cancellationTokenSource?.Cancel();
 
         private async Task UpdatePricesAsync(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                try
+                while (true)
                 {
-                    await Task.Delay(UPDATE_INTERVAL_MS, cancellationToken);
-
-                    // Simulate price movements (small random walk)
-                    foreach (var symbol in _marketData.Keys.ToList())
+                    await Task.Delay(UpdateIntervalMs, cancellationToken);
+                    lock (_marketData)
                     {
-                        var data = _marketData[symbol];
-                        var priceChange = (decimal)(_random.NextDouble() * 0.5 - 0.25); // -0.25 to +0.25
-                        var newPrice = Math.Max(data.LastPrice + priceChange, 0.01m);
-
-                        data.LastPrice = newPrice;
-                        data.BidPrice = newPrice - 0.05m;
-                        data.AskPrice = newPrice + 0.05m;
-                        data.Change = newPrice - (newPrice - priceChange); // Show movement
-                        data.ChangePercent = (data.Change / newPrice) * 100;
-                        data.Volume = (long)(_random.Next(10000000, 100000000));
-                        data.LastUpdate = DateTime.UtcNow;
+                        foreach (var data in _marketData.Values)
+                        {
+                            var movement = (decimal)(_random.NextDouble() * 0.5 - 0.25);
+                            var newPrice = Math.Max(0.01m, data.LastPrice + movement);
+                            data.LastPrice = newPrice;
+                            data.BidPrice = Math.Max(0.01m, newPrice - 0.05m);
+                            data.AskPrice = newPrice + 0.05m;
+                            data.Change = newPrice - data.LastPrice + movement;
+                            data.ChangePercent = data.Change / newPrice * 100m;
+                            data.Volume = _random.Next(10000000, 100000000);
+                            data.LastUpdate = DateTime.UtcNow;
+                        }
                     }
                 }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
             }
+            catch (OperationCanceledException) { }
+        }
+
+        private static MarketData Clone(MarketData data) => new MarketData
+        {
+            Symbol = data.Symbol, LastPrice = data.LastPrice, BidPrice = data.BidPrice,
+            AskPrice = data.AskPrice, Change = data.Change, ChangePercent = data.ChangePercent,
+            Volume = data.Volume, CompanyName = data.CompanyName, Sector = data.Sector,
+            DayHigh = data.DayHigh, DayLow = data.DayLow, MarketCap = data.MarketCap,
+            LastUpdate = data.LastUpdate
+        };
+
+        public void Dispose()
+        {
+            StopPriceUpdates();
+            _cancellationTokenSource?.Dispose();
         }
     }
 }
