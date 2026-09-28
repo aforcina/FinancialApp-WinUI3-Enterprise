@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
+using FinancialApp.Presentation.ViewModels;
 
 namespace FinancialApp.Presentation.Views
 {
@@ -6,7 +7,8 @@ namespace FinancialApp.Presentation.Views
     {
         public TradeTicketPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            DataContext = new TradeTicketViewModel(App.Services.MarketData, App.Services.Orders, "ACC-001");
         }
     }
 }

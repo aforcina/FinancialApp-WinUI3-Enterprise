@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
+using FinancialApp.Presentation.ViewModels;
 
 namespace FinancialApp.Presentation.Views
 {
@@ -6,7 +7,8 @@ namespace FinancialApp.Presentation.Views
     {
         public WatchlistPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            DataContext = new WatchlistViewModel(App.Services.MarketData, DispatcherQueue);
         }
     }
 }
